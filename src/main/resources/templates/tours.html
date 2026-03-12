@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Tours – SimplyTours!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #C9A84C; --dark: #0D0D0D; --dark2: #1A1A1A; --cream: #F5F0E8; --text-muted: #888; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Jost', sans-serif; background: var(--dark); color: var(--cream); }
+        nav {
+            position: sticky; top: 0; z-index: 100; background: var(--dark2);
+            padding: 20px 60px; display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .logo { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--gold); text-decoration: none; }
+        .nav-links a { color: var(--cream); text-decoration: none; margin-left: 32px; font-size: 0.85rem; letter-spacing: 1.5px; text-transform: uppercase; transition: color 0.3s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+
+        .page-header { padding: 60px 60px 40px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .page-header h1 { font-family: 'Playfair Display', serif; font-size: 3rem; margin-bottom: 8px; }
+        .page-header p { color: var(--text-muted); }
+
+        .filter-bar { padding: 24px 60px; display: flex; gap: 12px; background: var(--dark2); }
+        .filter-btn {
+            padding: 8px 24px; border: 1px solid rgba(255,255,255,0.15); background: transparent;
+            color: var(--cream); font-family: 'Jost', sans-serif; font-size: 0.8rem;
+            letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; transition: all 0.3s;
+            text-decoration: none; border-radius: 2px;
+        }
+        .filter-btn.active, .filter-btn:hover { background: var(--gold); border-color: var(--gold); color: var(--dark); }
+
+        .tours-grid { padding: 50px 60px; display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 30px; }
+        .tour-card {
+            background: var(--dark2); border: 1px solid rgba(255,255,255,0.06);
+            overflow: hidden; transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .tour-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+        .tour-img { position: relative; overflow: hidden; aspect-ratio: 16/10; }
+        .tour-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
+        .tour-card:hover .tour-img img { transform: scale(1.06); }
+        .tour-badge {
+            position: absolute; top: 16px; left: 16px;
+            background: var(--gold); color: var(--dark);
+            font-size: 0.65rem; letter-spacing: 2px; padding: 4px 10px; text-transform: uppercase; font-weight: 600;
+        }
+        .tour-body { padding: 28px; }
+        .tour-body h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 6px; }
+        .tour-dest { color: var(--gold); font-size: 0.8rem; letter-spacing: 1px; margin-bottom: 14px; }
+        .tour-desc { color: var(--text-muted); font-size: 0.88rem; line-height: 1.7; margin-bottom: 20px; }
+        .tour-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 18px; }
+        .tour-meta-info { display: flex; flex-direction: column; gap: 4px; }
+        .tour-days { font-size: 0.8rem; color: var(--text-muted); }
+        .tour-price { font-size: 1.3rem; font-weight: 500; }
+        .tour-price small { font-size: 0.7rem; opacity: 0.6; }
+        .tour-link {
+            background: var(--gold); color: var(--dark);
+            padding: 10px 22px; text-decoration: none;
+            font-size: 0.75rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600;
+            transition: all 0.3s; border-radius: 2px;
+        }
+        .tour-link:hover { background: #E8C97A; }
+
+        .empty { text-align: center; padding: 80px 20px; color: var(--text-muted); }
+        .empty h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 8px; }
+
+        footer { background: #050505; padding: 30px 60px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); }
+        footer p { color: var(--text-muted); font-size: 0.8rem; }
+
+        @media (max-width: 768px) {
+            nav, .page-header, .filter-bar, .tours-grid { padding-left: 20px; padding-right: 20px; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <a href="/" class="logo">SimplyTours!</a>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/tours" class="active">Tours</a>
+        <a href="/contact">Contact</a>
+    </div>
+</nav>
+
+<div class="page-header">
+    <h1>Our <em style="font-style:italic; color: var(--gold)">Tours</em></h1>
+    <p>Explore our collection of domestic & international journeys</p>
+</div>
+
+<div class="filter-bar">
+    <a th:href="@{/tours}" th:classappend="${activeFilter == 'ALL'} ? ' active' : ''" class="filter-btn">All Tours</a>
+    <a th:href="@{/tours(type='DOMESTIC')}" th:classappend="${activeFilter == 'DOMESTIC'} ? ' active' : ''" class="filter-btn">🇮🇳 Domestic</a>
+    <a th:href="@{/tours(type='INTERNATIONAL')}" th:classappend="${activeFilter == 'INTERNATIONAL'} ? ' active' : ''" class="filter-btn">✈ International</a>
+</div>
+
+<div class="tours-grid" th:if="${!tours.isEmpty()}">
+    <div th:each="tour : ${tours}" class="tour-card">
+        <div class="tour-img">
+            <img th:src="${tour.imageUrl}" th:alt="${tour.title}" loading="lazy">
+            <span class="tour-badge" th:text="${tour.tourType == 'DOMESTIC' ? '🇮🇳 Domestic' : '✈ International'}"></span>
+        </div>
+        <div class="tour-body">
+            <h3 th:text="${tour.title}">Tour Title</h3>
+            <p class="tour-dest" th:text="${tour.destination}">Destination</p>
+            <p class="tour-desc" th:text="${#strings.abbreviate(tour.description, 130)}">Description</p>
+            <div class="tour-footer">
+                <div class="tour-meta-info">
+                    <span class="tour-days" th:text="${tour.duration} + ' Days'">7 Days</span>
+                    <span class="tour-price">₹<span th:text="${#numbers.formatDecimal(tour.price, 0, 'COMMA', 0, 'POINT')}">25,000</span><small>/person</small></span>
+                </div>
+                <a th:href="@{/tours/{id}(id=${tour.id})}" class="tour-link">Book Now</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="empty" th:if="${tours.isEmpty()}">
+    <h3>No tours found</h3>
+    <p>Check back soon for upcoming tours</p>
+</div>
+
+<footer><p>© 2025 SimplyTours!</p></footer>
+</body>
+</html>

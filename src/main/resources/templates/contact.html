@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><title>Contact – SimplyTours!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #C9A84C; --dark: #0D0D0D; --dark2: #1A1A1A; --cream: #F5F0E8; --text-muted: #888; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Jost', sans-serif; background: var(--dark); color: var(--cream); }
+        nav { position: sticky; top: 0; z-index: 100; background: var(--dark2); padding: 20px 60px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .logo { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--gold); text-decoration: none; }
+        .nav-links a { color: var(--cream); text-decoration: none; margin-left: 32px; font-size: 0.85rem; letter-spacing: 1.5px; text-transform: uppercase; transition: color 0.3s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+
+        .contact-hero { padding: 80px 60px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .contact-hero span { font-size: 0.7rem; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); }
+        .contact-hero h1 { font-family: 'Playfair Display', serif; font-size: 3rem; margin: 12px 0 16px; }
+        .contact-hero p { color: var(--text-muted); max-width: 500px; margin: 0 auto; line-height: 1.7; }
+
+        .contact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; padding: 60px; }
+        .contact-card {
+            background: var(--dark2); padding: 50px 36px; text-align: center;
+            transition: transform 0.3s; text-decoration: none; color: var(--cream);
+            display: block;
+        }
+        .contact-card:hover { transform: translateY(-6px); }
+        .contact-icon { font-size: 2.5rem; margin-bottom: 20px; }
+        .contact-card h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 10px; }
+        .contact-card p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; line-height: 1.6; }
+        .contact-val { color: var(--gold); font-size: 1rem; font-weight: 500; }
+        .card-btn { display: inline-block; margin-top: 20px; padding: 10px 24px; border-radius: 2px; font-size: 0.8rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; transition: all 0.3s; }
+        .wa-card .card-btn { background: #25D366; color: white; }
+        .ig-card .card-btn { background: linear-gradient(135deg, #f09433,#e6683c,#dc2743,#cc2366,#bc1888); color: white; }
+        .ph-card .card-btn { background: var(--gold); color: var(--dark); }
+
+        .hours-section { padding: 60px; background: var(--dark2); border-top: 1px solid rgba(255,255,255,0.06); text-align: center; }
+        .hours-section h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 30px; }
+        .hours-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 700px; margin: 0 auto; }
+        .hour-item { background: var(--dark); padding: 24px; border-top: 2px solid var(--gold); }
+        .hour-day { font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+        .hour-time { font-size: 1.1rem; font-weight: 500; }
+
+        footer { background: #050505; padding: 30px 60px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); }
+        footer p { color: var(--text-muted); font-size: 0.8rem; }
+
+        @media (max-width: 768px) {
+            nav, .contact-hero, .contact-grid, .hours-section { padding-left: 20px; padding-right: 20px; }
+            .nav-links { display: none; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .hours-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <a href="/" class="logo">SimplyTours!</a>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/tours">Tours</a>
+        <a href="/contact" class="active">Contact</a>
+    </div>
+</nav>
+
+<div class="contact-hero">
+    <span>✦ Get In Touch</span>
+    <h1>We'd Love to <em style="font-style:italic;color:var(--gold)">Hear</em> from You</h1>
+    <p>Whether you have a question, need a custom tour, or just want to plan your next adventure — we're here.</p>
+</div>
+
+<div class="contact-grid">
+    <a href="https://wa.me/919876543210" target="_blank" class="contact-card wa-card">
+        <div class="contact-icon">💬</div>
+        <h3>WhatsApp</h3>
+        <p>Chat with us instantly on WhatsApp. Quick replies, any time.</p>
+        <div class="contact-val">+91 98765 43210</div>
+        <span class="card-btn">Message Us</span>
+    </a>
+    <a href="https://instagram.com/wanderluxtours" target="_blank" class="contact-card ig-card">
+        <div class="contact-icon">📸</div>
+        <h3>Instagram</h3>
+        <p>Follow us for travel inspiration, tour updates and stunning destinations.</p>
+        <div class="contact-val">@wanderluxtours</div>
+        <span class="card-btn">Follow Us</span>
+    </a>
+    <a href="tel:+919876543210" class="contact-card ph-card">
+        <div class="contact-icon">📞</div>
+        <h3>Phone Call</h3>
+        <p>Talk to our travel experts directly for personalised tour advice.</p>
+        <div class="contact-val">+91 98765 43210</div>
+        <span class="card-btn">Call Now</span>
+    </a>
+</div>
+
+<div class="hours-section">
+    <h2>Our Office Hours</h2>
+    <div class="hours-grid">
+        <div class="hour-item"><div class="hour-day">Monday – Friday</div><div class="hour-time">9:00 AM – 7:00 PM</div></div>
+        <div class="hour-item"><div class="hour-day">Saturday</div><div class="hour-time">10:00 AM – 5:00 PM</div></div>
+        <div class="hour-item"><div class="hour-day">Sunday</div><div class="hour-time">By Appointment</div></div>
+    </div>
+</div>
+
+<footer><p>© 2025 SimplyTours! – hello@simplytours.com</p></footer>
+</body>
+</html>

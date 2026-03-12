@@ -1,0 +1,39 @@
+<!-- LOGIN PAGE -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><title>Admin Login – SimplyTours!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #C9A84C; --dark: #0D0D0D; --dark2: #1A1A1A; --cream: #F5F0E8; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Jost', sans-serif; background: var(--dark); color: var(--cream); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        body::before { content: ''; position: fixed; inset: 0; background: url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1400') center/cover; opacity: 0.15; }
+        .login-box { position: relative; z-index: 1; background: var(--dark2); border: 1px solid rgba(201,168,76,0.2); padding: 50px 44px; width: 420px; }
+        .login-logo { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--gold); text-align: center; margin-bottom: 8px; }
+        .login-sub { text-align: center; font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 40px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-size: 0.72rem; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 8px; }
+        input { width: 100%; background: var(--dark); border: 1px solid rgba(255,255,255,0.1); color: var(--cream); padding: 13px 16px; font-family: 'Jost', sans-serif; font-size: 0.9rem; border-radius: 2px; transition: border-color 0.3s; }
+        input:focus { outline: none; border-color: var(--gold); }
+        .login-btn { width: 100%; background: var(--gold); color: var(--dark); border: none; padding: 15px; font-family: 'Jost', sans-serif; font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; cursor: pointer; border-radius: 2px; transition: all 0.3s; margin-top: 8px; }
+        .login-btn:hover { background: #E8C97A; }
+        .error-msg { background: rgba(220,53,69,0.15); border: 1px solid rgba(220,53,69,0.3); color: #ff6b6b; padding: 12px; font-size: 0.85rem; border-radius: 2px; margin-bottom: 20px; text-align: center; }
+        .back-link { display: block; text-align: center; margin-top: 24px; color: rgba(255,255,255,0.4); text-decoration: none; font-size: 0.8rem; transition: color 0.3s; }
+        .back-link:hover { color: var(--gold); }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <div class="login-logo">SimplyTours!</div>
+        <div class="login-sub">Admin Portal</div>
+        <div class="error-msg" th:if="${param.error}">Invalid username or password</div>
+        <form th:action="@{/login}" method="post">
+            <div class="form-group"><label>Username</label><input type="text" name="username" required autofocus></div>
+            <div class="form-group"><label>Password</label><input type="password" name="password" required></div>
+            <button type="submit" class="login-btn">Sign In →</button>
+        </form>
+        <a href="/" class="back-link">← Back to Website</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><title>Bookings – Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #C9A84C; --dark: #0D0D0D; --dark2: #1A1A1A; --cream: #F5F0E8; --text-muted: #777; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Jost', sans-serif; background: var(--dark); color: var(--cream); display: flex; min-height: 100vh; }
+        .sidebar { width: 240px; background: var(--dark2); border-right: 1px solid rgba(255,255,255,0.06); padding: 30px 0; flex-shrink: 0; }
+        .sidebar-logo { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--gold); padding: 0 24px 30px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .sidebar-logo small { display: block; font-family: 'Jost', sans-serif; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-top: 4px; }
+        .nav-item { display: flex; align-items: center; gap: 12px; padding: 14px 24px; text-decoration: none; color: var(--text-muted); font-size: 0.88rem; transition: all 0.2s; }
+        .nav-item:hover, .nav-item.active { color: var(--cream); background: rgba(255,255,255,0.04); border-left: 2px solid var(--gold); }
+        .main { flex: 1; padding: 40px; overflow-y: auto; }
+        .page-title { font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 30px; }
+        .alert-success { background: rgba(40,167,69,0.15); border: 1px solid rgba(40,167,69,0.3); color: #5cb85c; padding: 12px 16px; border-radius: 2px; margin-bottom: 20px; font-size: 0.9rem; }
+        .table-wrap { background: var(--dark2); overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 900px; }
+        th { text-align: left; padding: 12px 16px; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); }
+        td { padding: 14px 16px; font-size: 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: middle; }
+        tr:hover td { background: rgba(255,255,255,0.02); }
+        .status-badge { padding: 3px 10px; font-size: 0.68rem; letter-spacing: 1px; text-transform: uppercase; border-radius: 20px; display: inline-block; }
+        .PENDING { background: rgba(255,193,7,0.15); color: #ffc107; }
+        .CONFIRMED { background: rgba(40,167,69,0.15); color: #28a745; }
+        .CANCELLED { background: rgba(220,53,69,0.15); color: #dc3545; }
+        .status-form { display: flex; gap: 6px; align-items: center; }
+        .status-form select { background: var(--dark); border: 1px solid rgba(255,255,255,0.1); color: var(--cream); padding: 5px 8px; font-family: 'Jost', sans-serif; font-size: 0.78rem; border-radius: 2px; cursor: pointer; }
+        .status-form button { background: var(--gold); color: var(--dark); border: none; padding: 5px 12px; font-family: 'Jost', sans-serif; font-size: 0.72rem; font-weight: 600; cursor: pointer; border-radius: 2px; }
+        .empty-row td { text-align: center; padding: 50px; color: var(--text-muted); }
+        .phone-link { color: var(--gold); text-decoration: none; }
+        .special { max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-muted); font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+<div class="sidebar">
+    <div class="sidebar-logo">SimplyTours!<small>Admin Panel</small></div>
+    <a href="/admin/dashboard" class="nav-item"><span>🏠</span> Dashboard</a>
+    <a href="/admin/itineraries" class="nav-item"><span>🗺</span> Itineraries</a>
+    <a href="/admin/bookings" class="nav-item active"><span>📋</span> Bookings</a>
+    <a href="/" class="nav-item" target="_blank"><span>🌐</span> View Website</a>
+</div>
+<div class="main">
+    <h1 class="page-title">Booking Enquiries</h1>
+    <div class="alert-success" th:if="${message}" th:text="${message}"></div>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th><th>Phone</th><th>Tour</th><th>Travel Date</th>
+                    <th>People</th><th>Special Requests</th><th>Status</th><th>Update</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="b : ${bookings}">
+                    <td>
+                        <strong th:text="${b.travelerName}">Name</strong><br>
+                        <small style="color:var(--text-muted)" th:text="${b.email}">email</small>
+                    </td>
+                    <td><a class="phone-link" th:href="'tel:' + ${b.phone}" th:text="${b.phone}">Phone</a></td>
+                    <td>
+                        <span th:text="${b.itineraryTitle}">Tour</span><br>
+                        <small style="color:var(--text-muted)" th:text="${b.destination}">Dest</small>
+                    </td>
+                    <td th:text="${b.travelDate}">Date</td>
+                    <td th:text="${b.numberOfPeople}">1</td>
+                    <td class="special" th:text="${b.specialRequests ?: '—'}">Requests</td>
+                    <td><span class="status-badge" th:classappend="${b.status}" th:text="${b.status}">PENDING</span></td>
+                    <td>
+                        <form th:action="@{/admin/bookings/{id}/status(id=${b.id})}" method="post" class="status-form">
+                            <select name="status">
+                                <option value="PENDING" th:selected="${b.status == 'PENDING'}">Pending</option>
+                                <option value="CONFIRMED" th:selected="${b.status == 'CONFIRMED'}">Confirmed</option>
+                                <option value="CANCELLED" th:selected="${b.status == 'CANCELLED'}">Cancelled</option>
+                            </select>
+                            <button type="submit">Update</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${bookings.isEmpty()}" class="empty-row">
+                    <td colspan="8">No bookings yet</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

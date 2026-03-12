@@ -1,0 +1,24 @@
+# Maven
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Spring Boot
+*.log
+application-dev.properties
+
+# Database
+*.db
+*.sqlite
